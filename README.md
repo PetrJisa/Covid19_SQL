@@ -22,8 +22,11 @@ This table is called **t_life_expectancy_data** after it is created. It is one o
 The data were mined from the source table ***life_expectancy_*** and following columns are present: 
 
 _country_ : field of distinct countries from the source table
+
 _life_expectancy_1965_ : contains the life expectancy in the countries, valid for the year 1965
+
 _life_expectancy_2015_ : contains the life expectancy in the countries, valid for the year 2015
+
 _life_expectancy_difference_: contains the difference in the values of life expectancy in the year 1965 and 2015
 
 Among these columns, only the column _life_expectancy_difference_ is contained in the final table. 
@@ -33,10 +36,15 @@ Among these columns, only the column _life_expectancy_difference_ is contained i
 This table is called **t_economy_data** after it is created. This table was created from the source table ***economies*** and consists of the following columns:
 
 _country_ : includes distinct countries from the source table
+
 _unit_GDP_ : includes the GDP for the given country, recalculated to one resident of the country (overall GDP divided by the overall population of the state)
+
 _unit_GDP_year_ : includes the year from which the record in _unit_GDP_ is valid for the given country
+
 _gini_coeficient_ : includes the GINI coeficient for the given country
+
 _gini_calc_period_ : includes the time period from which the average GINI coeficient was calculated
+
 _mortality_under_5 : includes the mortality of children before reaching age of 5 years
 
 Of course, the approach leading to creation of this table must be explained. The default data set, obtained from ***economies*** is little bit problematic in relation to the project task. There are 3 problems: 
