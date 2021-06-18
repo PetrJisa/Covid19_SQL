@@ -18,7 +18,10 @@ _The columns in the particular tables are written in italics_
 
 #### Table of life expectancy
 
-This table is called **t_life_expectancy_data** after it is created. The source data were mined from the table _life_expectancy_, which is a part of database  :
-_country_ : This column contains the distinctive field of conutries from the source table
+This table is called **t_life_expectancy_data** after it is created. It is one of a very few tables, which does not need a wide description. 
+The source data were mined from the table ***life_expectancy_*** and following columns are present: 
+
+_country_ : field of distinct countries from the source table
+
  
 
