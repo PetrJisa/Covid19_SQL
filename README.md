@@ -162,14 +162,14 @@ This table serves to optimize the key arrays that serve to join the auxiliary ta
 
 The reason for creation of this table may be described using the example for the 'Czech Republic'. In **t_covid19_basic_differences_data** it is represented by the string **'Czechia'**. However, in ***countries*** from data.engeto.com, which must be used to access the _capital_city_ for join on the _city_ from ***weather*** table, it is represented by the string **'Czech Republic'**. And furthermore, in **countries**, the capital city of the Czech Republic is **'Praha'**, while in the table ***weather*** it is **'Prague'**. 
 
-**It is obvious that if the join between the afforementioned tables would be done using the original arrays in these tables, we would not obtain the weather data for the Czech Republic, despite they are accessible!!** And even more, there are more cases similar to the one for the Czech Republic. 
+**It is obvious that if the join between the afforementioned tables would be done using the original columns in these tables, we would not obtain the weather data for the Czech Republic, despite they are accessible!!** And even more, there are more cases similar to the one for the Czech Republic. 
 
 Therefore, the table **t_keys** was created. It contains the modified arrays that are equivalent to the arrays from the original tables in data.engeto.com which are consequently equal to the arrays in the auxiliary tables that are used for joining the tables together in the query, creating the final table. The whole table **t_keys** is then 'invisibly joined' on the table **t_covid19_basic_differences_data** using join **on _t_covid19_basic_differences_data_ = _t_keys.lookup_table_country_**, because these arrays are equal. The other tables are joined on this construction, using corresponding arrays - in example the table **t_weater_data** is joined **on _t_weather_data.city_ = _t_keys.weather_city_**, while the table **t_economy_data** is joined **on _t_economy_data.country_ = _t_keys.economies_country_**
 
 
 #### Database indexes
 
-To decrease the time which is needed to execute the query that create the final table, I recommend to create database indexes into the longest arrays which are used for joining the tables. Namely, I have created indexes in tables **t_covid19_basic_differences_data**, **t_weather** and **t_covid19_tests_data**. The indexes are also created by queries which can be found in the attached file **Auxiliary_objects.sql**.  
+To decrease the time which is needed to execute the query that creates the final table, I recommend to create database indexes into the longest arrays which are used for joining the tables. Namely, I have created indexes in tables **t_covid19_basic_differences_data**, **t_weather** and **t_covid19_tests_data**. The indexes are also created by queries which can be found in the attached file **Auxiliary_objects.sql**.  
 
 
 ### The final table
