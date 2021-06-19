@@ -141,19 +141,19 @@ Prior to creation of the final table, please be sure that the auxiliary tables w
 
 The complete list of the auxiliary tables for the last crucial check is as follows: 
 
-**t_life_expectancy_data
+**t_life_expectancy_data**
 
-**t_economy_data
+**t_economy_data**
 
-**t_weather_data
+**t_weather_data**
 
-**t_religions_data
+**t_religions_data**
 
-**t_time_data
+**t_time_data**
 
-**t_covid19_basic_differences_data (including database index in the column _date_, arbitrary but recommended)
+**t_covid19_basic_differences_data** (including database index in the column _date_, arbitrary but recommended)
 
-**t_keys
+**t_keys**
 
 # Thank you in advance for reading this documentation!
 
