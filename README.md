@@ -1,6 +1,6 @@
 # Covid19_SQL
 
-This project was worked out in frame of Engeto Data Academy course. The goal was to construct a panel data table, which will serve as a hypothetical platform for creation of mathematical model, describing the complex influence of many factors on the course and seriousness of the covid 19 pandemic in the particular countries. The factors include parameters which describe economical level, standard of living, weather and distribution of religion attendees in the countries. Furthermore, also specific parameter that gives an indirect information regarding the historical consequence in the given states is included (namely overall change in life expectancy over the last 50 years) and - of course - the parameters which are linked with the time-aspects. 
+This project was worked out in frame of Engeto Data Academy course. The goal was to construct a panel data table, which could serve for creation of mathematical model, describing the complex influence of many factors on the course and seriousness of the covid 19 pandemic in the particular countries. The factors include parameters which describe economical level, standard of living, weather and distribution of religion attendees in the countries. Furthermore, also specific parameter that gives an indirect information regarding the historical consequence in the given states is included (namely overall change in life expectancy over the last 50 years) and - of course - the parameters which are linked with the time-aspects. 
 
 
 ## Project solution
