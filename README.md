@@ -82,3 +82,45 @@ All of the parameters _avg_temp_, _max_wind_ and _rainy_hours_ are determined us
 Important note must be stated, regarding the parameter _rainy_hours_. The amount of rainy hours is a raw approximation because only cumulative data are accessible at the times mentioned above. In case when there is an amount of precipitations above zero as a sum at 9:00, this information is expressed as 3 rainy hours in the array _rainy_hours_ (as if it would rain from 6:00 to 9:00). This is done despite the real situation can be that during that 3 hours, there was 10 minutes of rain, giving the overall sum of precipitations above zero, and this short rain did not influence so many people as the real 3 hours lasting rain. Nevertheless, there is no clue to improve the approximation in this way.
 
 Furthermore, let me now shoot into my own work a little bit more. The weather data are only accessible for cities, and even these cities are only capitals of the European states. Therefore, the weather impacts can be evaluated only for Europe. And what is more, the weather in the selected country is approximated by the weather in its capital city. As a fan of meteorology and climatology, I do not like to see this approach, because even in a small country like Czech Republic, we know high difference regarding the weather in the same time from west to east, from lowlands to mountains, effect of the Prague warm city island that surely will be present also for some of the other cities, and many other effects.
+
+#### Table of religions data
+
+This table is called **t_religion_data** after it is created. This table was created from the source table ***religions*** in database data.engeto.com and consists of the following columns:
+
+_country_ : country for which the religions data were determined
+
+_Christianity %_ : ratio of the part of the population which denominate Christianity for the given country
+
+_Islam %_ : ratio of the part of the population which denominate Islam
+
+.........
+
+I am not going to write down all religions that are able to be found in this table. For each of these religions, there is a separate column in **t_religion_data** and all these columns are used in the final table, according to the requirement.  
+
+In the source table ***religions***, the religions were stated in column _religion_, but from a practical reason, they were transformed into columns in **t_religion_data**. The reason is obvious - it would not make sense to have multiple rows for each country and date in the final table, differing only in data regarding the distribution of population according to religion. 
+
+This table gave me a little mystery. Even though there are data for Afghanistan in the source table and in the query that transforms the data from the source table ***religions*** to the table **t_religions_data** there is not any omission that should exclude data for Afghanistan from the final table **t_religions_data**, they were not present there. Let me humbly confess that I solved this problem "manually" after many attepmts to find the reason for this omission, using the _case when_ clause for the target columns, adding data for Afghanistan separately.
+
+#### Table of time indicators
+
+This table is called **t_time_data** after it is created. The source data come from joined tables ***covid19_basic_differences*** and ***seasons*** in the database data.engeto.com.  The table **t_time_data** includes the following columns: 
+
+_date_ : date for which the parameters in the table were determined
+
+_season_ : the season in the year (0 - winter, 1 - spring, 2 - summer, 3 - autumn)
+
+_weekend_flag_ : binary array (0 when the date is a working day, 1 when the date is one of the weekend days)
+
+#### Modified table covid19_basic_differences
+
+A few modifications of the table ***covid19_basic_differences*** from the database data.engeto.com were worth it from the project point of view. It lead to creation of a a modified table, which is called **t_covid19_basic_differences_data** when it is created.  
+
+
+
+
+
+
+
+
+
+
