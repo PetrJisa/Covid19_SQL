@@ -2,9 +2,11 @@
 
 This project was worked out in frame of Engeto Data Academy course. The goal was to construct a panel data table, which will serve as a hypothetical platform for creation of mathematical model, describing the complex influence of many factors on the course and seriousness of the covid 19 pandemic in the particular countries. The factors include parameters which describe economical level, standard of living, weather and distribution of religion attendees in the countries. Furthermore, also specific parameter that gives an indirect information regarding the historical consequence in the given states is included (namely overall change in life expectancy over the last 50 years) and - of course - the parameters which are linked with the time-aspects. 
 
+
 ## Project solution
 
 The project was written in SQL. The data source was the database _data.engeto.com_, to which I was connected using localhost. As a consequence, the results were not shared between the database users. Therefore, the direct output of the project are SQL scripts, which are designed to be postponed to the second side so that the second side can use the scripts to generate the required object which is the final table, as well as the auxiliary objects. 
+
 
 ### Auxiliary objects
 
@@ -18,7 +20,8 @@ In the following text, there is a following typographic convention:
 
 ***The source tables from data.engeto.com are written in bold italics***
 
-_The columns in the tables are written in italics_ 
+_The columns in the tables are written in italics_
+
 
 #### Table of life expectancy
 
@@ -33,7 +36,8 @@ _life_expectancy_2015_ : contains the life expectancy in the countries, valid fo
 
 _life_expectancy_difference_: contains the difference in the values of life expectancy in the year 1965 and 2015
 
-Among these columns, only the column _life_expectancy_difference_ is contained in the final table. 
+Among these columns, only the column _life_expectancy_difference_ is contained in the final table.
+
 
 #### Table of economical factors
 
@@ -67,6 +71,7 @@ The afforementioned problems lead to specific solution of the table columns:
 
 All of the afforementioned columns are present in the final table, except from the key column _countries_. In my opinion, the person who will create the model should have the possibility to know the complementary information, from which year or period the data were obtained. Then, he can decide whether he will include the data to the set for model depending on how they are actual, he can scale them according to their validity (to give lower weight to the older GDPs and GINI coeficients) etc.
 
+
 #### Table of weather data
 
 This table is called **t_weather_data** after it is created. The source data for this table are gained from the table ***weather*** in database data.engeto.com. The columns in **t_weather_data** are the following: 
@@ -87,7 +92,6 @@ Important note must be stated, regarding the parameter _rainy_hours_. The amount
 
 Furthermore, let me now shoot into my own work a little bit more. The weather data are only accessible for cities, and even these cities are only capitals of the European states. Therefore, the weather impacts can be evaluated only for Europe. And what is more, the weather in the selected country is approximated by the weather in its capital city. As a fan of meteorology and climatology, I do not like to see this approach, because even in a small country like Czech Republic, we know high difference regarding the weather in the same time from west to east, from lowlands to mountains, effect of the Prague warm city island that surely will be present also for some of the other cities, and many other effects.
 
-I also recommend to create a database index in the array (column) _date_, to decrease the execution time of the query that creates the final table. The final query execution time got from time above 10 minutes to less than 3 minutes after the index implementation on the column _date_!! The index creation query is also a part of the attached file **Auxiliary_objects.sql** 
 
 #### Table of religions data
 
@@ -105,6 +109,7 @@ I am not going to write down all religions that are able to be found in this tab
 
 In the source table ***religions***, the religions were stated in column _religion_, but from a practical reason, they were transformed into columns in **t_religion_data**. The reason is obvious - it would not make sense to have multiple rows for each country and date in the final table, differing only in data regarding the distribution of population according to religion. 
 
+
 #### Table of time indicators
 
 This table is called **t_time_data** after it is created. The source data come from joined tables ***covid19_basic_differences*** and ***seasons*** in the database data.engeto.com.  The table **t_time_data** includes the following columns: 
@@ -115,13 +120,41 @@ _season_ : the season in the year (0 - winter, 1 - spring, 2 - summer, 3 - autum
 
 _weekend_flag_ : binary array (0 when the date is a working day, 1 when the date is one of the weekend days)
 
+
+#### Table of performed tests
+
+This table is called **t_covid19_tests_data** after it is created. The source data come from the table ***covid19_tests*** in the database data.engeto.com. The table **t_covid19_tests_data** contains the folowing columns: 
+
+_date_ : date for which the parameters in the table were determined
+
+_country_ : country for which the parameters in the table were determined
+
+_tests_performed: the number of tests that were performed in the given country at the given date
+
+I would like to note that for many countries, the data from testing are inaccessible in the source table, and therefore also in the prepared auxiliary table. 
+
+Furthermore, some cases can be observed in the source table, where the same country has 2 records of performed tests for one date. Looking at those records, I realized that they are relatively similar (if not in all cases, then in most of them). I suppose that these are the cases when the country sent the incomplete data at first, followed by the second sending of completed data. Therefore, in case of 2 records for the same country in one day, I used the maximum from the 2 records as amount of the performed tests. 
+
+
+#### Table of specific data for countries
+
+This table is called **t_country_data** after it is created. The source data come from the table ***countries*** in the database data.engeto.com. The table **t_country_data** contains the folowing columns:
+
+_country_ : ountry for which the parameters in the table were determined
+
+_population_ : overall population of the given country
+
+_population_density_ : population density of the given country
+
+_median_age_2018_ : median of the age in the overall population, calculated explicitly from data in 2018 (not based on the selection of data from the year 2018 and calculation)
+
+
 #### Modified table covid19_basic_differences
 
 A few modifications of the table ***covid19_basic_differences*** from the database data.engeto.com were worth it from the project point of view. It lead to creation of a modified table, which is called **t_covid19_basic_differences_data** when it is created. The modification was done in two ways: 
 
-1) The countries (and even one cruise ship "MS Zaandam") for which there are no data in the above descriped tables were excluded. The excluded items are 'Diamond Princess', 'Kosovo', 'Ms Zaandam', 'Namibia', 'Taiwan*' and 'West Bank and Gaza'
+The countries (and even one cruise ship "MS Zaandam") for which there are no data in the above descriped tables were excluded. The excluded items are 'Diamond Princess', 'Kosovo', 'Ms Zaandam', 'Namibia', 'Taiwan*' and 'West Bank and Gaza'
 
-2) Database index was created in the array (column) _date_, to decrease the execution time of the query that creates the final table. It was planned to create also a second database index on the array _country_, however the creation was not successful. Even though, I do think the final query execution time got shorter after the index implementation on the column _date_. The query for the index creation can also be found in the attached file **Auxiliary_objects.sql**
 
 #### Table of optimized keys
 
@@ -133,25 +166,35 @@ The reason for creation of this table may be described using the example for the
 
 Therefore, the table **t_keys** was created. It contains the modified arrays that are equivalent to the arrays from the original tables in data.engeto.com which are consequently equal to the arrays in the auxiliary tables that are used for joining the tables together in the query, creating the final table. The whole table **t_keys** is then 'invisibly joined' on the table **t_covid19_basic_differences_data** using join **on _t_covid19_basic_differences_data_ = _t_keys.lookup_table_country_**, because these arrays are equal. The other tables are joined on this construction, using corresponding arrays - in example the table **t_weater_data** is joined **on _t_weather_data.city_ = _t_keys.weather_city_**, while the table **t_economy_data** is joined **on _t_economy_data.country_ = _t_keys.economies_country_**
 
+
+#### Database indexes
+
+To decrease the time which is needed to execute the query that create the final table, I recommend to create database indexes into the longest arrays which are used for joining the tables. Namely, I have created indexes in tables **t_covid19_basic_differences_data**, **t_weather** and **t_covid19_tests_data**. The indexes are also created by queries which can be found in the attached file **Auxiliary_objects.sql**.  
+
+
 ### The final table
 
 Finally, we are moving to the final table. This table is created using the only query in the script for its creation, which is attached as **'Final_table.sql'**. The final table which is created after the query is executed is called **t_petr_jíša_project_sql_final**
 
 Prior to creation of the final table, please be sure that the auxiliary tables were created by executing all queris from **Auxiliary_objects.sql**. 
 
-The complete list of the auxiliary tables for the last crucial check is as follows: 
+The complete list of the auxiliary tables for the last crucial checkout is as follows: 
 
 **t_life_expectancy_data**
 
 **t_economy_data**
 
-**t_weather_data** (with added database index in the column _date_, arbitrary but strongly recommended)
+**t_weather_data**
 
 **t_religions_data**
 
 **t_time_data**
 
-**t_covid19_basic_differences_data** (with added database index in the column _date_, arbitrary but strongly recommended)
+**t_covid19_tests_data**
+
+**t_countries_data**
+
+**t_covid19_basic_differences_data**
 
 **t_keys**
 
