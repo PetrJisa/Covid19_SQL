@@ -87,6 +87,8 @@ Important note must be stated, regarding the parameter _rainy_hours_. The amount
 
 Furthermore, let me now shoot into my own work a little bit more. The weather data are only accessible for cities, and even these cities are only capitals of the European states. Therefore, the weather impacts can be evaluated only for Europe. And what is more, the weather in the selected country is approximated by the weather in its capital city. As a fan of meteorology and climatology, I do not like to see this approach, because even in a small country like Czech Republic, we know high difference regarding the weather in the same time from west to east, from lowlands to mountains, effect of the Prague warm city island that surely will be present also for some of the other cities, and many other effects.
 
+I also recommend to create a database index in the array (column) _date_, to decrease the execution time of the query that creates the final table. The final query execution time got from time above 10 minutes to less than 3 minutes after the index implementation on the column _date_!! The index creation query is also a part of the attached file **Auxiliary_objects.sql** 
+
 #### Table of religions data
 
 This table is called **t_religion_data** after it is created. This table was created from the source table ***religions*** in database data.engeto.com and consists of the following columns:
@@ -119,7 +121,7 @@ A few modifications of the table ***covid19_basic_differences*** from the databa
 
 1) The countries (and even one cruise ship "MS Zaandam") for which there are no data in the above descriped tables were excluded. The excluded items are 'Diamond Princess', 'Kosovo', 'Ms Zaandam', 'Namibia', 'Taiwan*' and 'West Bank and Gaza'
 
-2) Database index was created in the array (column) _date_, to decrease the execution time of the query that creates the final table. It was planned to create also a second database index on the array _country_, however the creation was not successful. Even though, I do think the final query execution time got shorter after the index implementation on the column _date_
+2) Database index was created in the array (column) _date_, to decrease the execution time of the query that creates the final table. It was planned to create also a second database index on the array _country_, however the creation was not successful. Even though, I do think the final query execution time got shorter after the index implementation on the column _date_. The query for the index creation can also be found in the attached file **Auxiliary_objects.sql**
 
 #### Table of optimized keys
 
@@ -143,13 +145,13 @@ The complete list of the auxiliary tables for the last crucial check is as follo
 
 **t_economy_data**
 
-**t_weather_data**
+**t_weather_data** (with added database index in the column _date_, arbitrary but strongly recommended)
 
 **t_religions_data**
 
 **t_time_data**
 
-**t_covid19_basic_differences_data** (including database index in the column _date_, arbitrary but recommended)
+**t_covid19_basic_differences_data** (with added database index in the column _date_, arbitrary but strongly recommended)
 
 **t_keys**
 
