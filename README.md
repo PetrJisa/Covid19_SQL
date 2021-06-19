@@ -45,7 +45,7 @@ _gini_coeficient_ : includes the GINI coeficient for the given country
 
 _gini_calc_period_ : includes the time period from which the average GINI coeficient was calculated
 
-_mortality_under_5 : includes the mortality of children before reaching age of 5 years
+_mortality_under_5_ : includes the mortality of children before reaching age of 5 years
 
 Of course, the approach leading to creation of this table must be explained. The default data set, obtained from ***economies*** is little bit problematic in relation to the project task. There are 3 problems: 
 
@@ -61,4 +61,24 @@ The afforementioned problems lead to specific solution of the table columns:
 
 2) The data in _gini_coeficient_ were calculated as average value from period 2015 - 2019 and if it was not possible due to the data inaccessibility for the given country in this (relatively actual) period, the average values from period 2010 - 2014 were calculated instead. If even the calculation of GINI coeficeint using the data from period 2010 - 2014 was impossible, the _gini_coeficient_ was set as NULL. The column _gini_calc_period_ refers to the period from which the average GINI coeficient was calculated for the given state, in order to distinguish the cases of how the parameter was obtained.  
 
-All of the afforementioned columns are present in the final table, except from the key column _countries_. In my opinion, the person who will create the model should have the possibility to know the complementary information, from which year or period the data were obtained. Then, he can decide whether he will include the data to the set for model depending on how they are actual, he can scale them according to how their validity (to give lower weight to the older GDPs and GINI coeficients) etc.  
+All of the afforementioned columns are present in the final table, except from the key column _countries_. In my opinion, the person who will create the model should have the possibility to know the complementary information, from which year or period the data were obtained. Then, he can decide whether he will include the data to the set for model depending on how they are actual, he can scale them according to their validity (to give lower weight to the older GDPs and GINI coeficients) etc.
+
+#### Table of weather data
+
+This table is called **t_weather_data** after it is created. The source data for this table are gained from the table ***weather*** in database data.engeto.com. The columns in **t_weather_data** are the following: 
+
+_date_ : includes the date at which the weather parameters were determined
+
+_city_ : includes the city in which the weather parameters were determined
+
+_avg_temp_ : includes the average temperture for given city at given date during the day (night excluded)
+
+_max_wind_ : includes the maximum wind speed for given city at given date during the day (night excluded)
+
+_rainy_hours_ : includes the approximation of the rainy hours amount at given date during the day (night excluded)
+
+All of the parameters _avg_temp_, _max_wind_ and _rainy_hours_ are determined using the data from table weather where the time is 06:00, 09:00, 12:00, 15:00, 18:00 and 21:00. This is in accordance with the assumption that weather influences the behaviour of the people, but most of them are active only during the day. Therefore, the weather data from the night are excluded. 
+
+Important note must be stated, regarding the parameter _rainy_hours_. The amount of rainy hours is a raw approximation because only cumulative data are accessible at the times mentioned above. In case when there is an amount of precipitations above zero as a sum at 9:00, this information is expressed as 3 rainy hours in the array _rainy_hours_ (as if it would rain from 6:00 to 9:00). This is done despite the real situation can be that during that 3 hours, there was 10 minutes of rain, giving the overall sum of precipitations above zero, and this short rain did not influence so many people as the real 3 hours lasting rain. Nevertheless, there is no clue to improve the approximation in this way.
+
+Furthermore, let me now shoot into my own work a little bit more. The weather data are only accessible for cities, and even these cities are only capitals of the European states. Therefore, the weather impacts can be evaluated only for Europe. And what is more, the weather in the selected country is approximated by the weather in its capital city. As a fan of meteorology and climatology, I do not like to see this approach, because even in a small country like Czech Republic, we know high difference regarding the weather in the same time from west to east, from lowlands to mountains, effect of the Prague warm city island that surely will be present also for some of the other cities, and many other effects.
