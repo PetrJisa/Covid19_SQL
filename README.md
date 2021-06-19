@@ -198,7 +198,7 @@ The complete list of the auxiliary tables for the last crucial checkout is as fo
 
 **t_keys**
 
-**The first version of the final table was also added into database data.engeto.com on Saturday 19th July** 
+**The first version of the final table was also added into database data.engeto.com on Saturday 19th June 2021** 
 
 # Thank you in advance for reading this documentation!
 
