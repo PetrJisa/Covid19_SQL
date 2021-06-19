@@ -113,7 +113,15 @@ _weekend_flag_ : binary array (0 when the date is a working day, 1 when the date
 
 #### Modified table covid19_basic_differences
 
-A few modifications of the table ***covid19_basic_differences*** from the database data.engeto.com were worth it from the project point of view. It lead to creation of a a modified table, which is called **t_covid19_basic_differences_data** when it is created.  
+A few modifications of the table ***covid19_basic_differences*** from the database data.engeto.com were worth it from the project point of view. It lead to creation of a modified table, which is called **t_covid19_basic_differences_data** when it is created. The modification was done in two ways: 
+
+1) The countries (and even one cruise ship "MS Zaandam") for which there are no data in the above descriped tables were excluded. The excluded items are 'Diamond Princess', 'Kosovo', 'Ms Zaandam', 'Namibia', 'Taiwan*' and 'West Bank and Gaza'
+
+2) Database index was created in the array (column) _date_, to decrease the execution time of the query that creates the final table. It was planned to create also a second database index on the array _country_, however the creation was not successful. Even though, I do think the final query execution time got shorter after the index implementation on the column _date_
+
+#### Table of optimized keys
+
+
 
 
 
