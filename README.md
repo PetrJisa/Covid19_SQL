@@ -103,8 +103,6 @@ I am not going to write down all religions that are able to be found in this tab
 
 In the source table ***religions***, the religions were stated in column _religion_, but from a practical reason, they were transformed into columns in **t_religion_data**. The reason is obvious - it would not make sense to have multiple rows for each country and date in the final table, differing only in data regarding the distribution of population according to religion. 
 
-This table gave me a little mystery. Even though there are data for Afghanistan in the source table and in the query that transforms the data from the source table ***religions*** to the table **t_religions_data** there is not any omission that should exclude data for Afghanistan from the final table **t_religions_data**, they were not present there. Let me humbly confess that I solved this problem "manually" after many attepmts to find the reason for this omission, using the _case when_ clause for the target columns, adding data for Afghanistan separately.
-
 #### Table of time indicators
 
 This table is called **t_time_data** after it is created. The source data come from joined tables ***covid19_basic_differences*** and ***seasons*** in the database data.engeto.com.  The table **t_time_data** includes the following columns: 
