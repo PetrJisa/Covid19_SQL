@@ -1,6 +1,6 @@
--- Vytvoøení finální tabulky
+-- VytvoÅ™enÃ­ finÃ¡lnÃ­ tabulky
 
-create table t_Petr_Jíša_project_SQL_final as
+create table t_Petr_JÃ­Å¡a_project_SQL_final as
 select
 	cbd.*,
 	ctd.tests_performed,
@@ -50,3 +50,4 @@ from
 	on cnt.country = k.countries_country
 	left join t_covid19_tests_data ctd
 	on ctd.country = k.covid19_tests_country and ctd.date = cbd.date;
+	
