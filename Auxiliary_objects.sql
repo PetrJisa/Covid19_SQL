@@ -1,4 +1,4 @@
--- Tabulka ekonomickıch ukazatelù t_economy_data
+-- Tabulka ekonomickÃ½ch ukazatelÅ¯ t_economy_data
 
 create table t_economy_data as
 select
@@ -57,7 +57,7 @@ left join
 	group by country) as e10_14
 on e19.country = e10_14.country;
 
--- Tabulka náboenství t_religion_data
+-- Tabulka nÃ¡boÅ¾enstvÃ­ t_religion_data
 
 create table t_religion_data
 select
@@ -140,7 +140,7 @@ left join
 	having sum(population) > 0) rs
 on base.country = rs.country;
 
--- Tabulka èasovıch ukazatelù t_time_data
+-- Tabulka ÄasovÃ½ch ukazatelÅ¯ t_time_data
 
 create table t_time_data as
 select
@@ -164,7 +164,7 @@ left join
 	from seasons) s
 on c.date = s.date;
 
--- Tabulka se zmìnou oèekávané doby doití t_life_expectancy_data
+-- Tabulka se zmÄ›nou oÄekÃ¡vanÃ© doby doÅ¾itÃ­ t_life_expectancy_data
 
 create table t_life_expectancy_data as
 select
@@ -186,7 +186,7 @@ left join
 	where year = 1965) as past
 on present.country = past.country;
 
--- Tabulka s údaji o poèasí t_weather_data
+-- Tabulka s Ãºdaji o poÄasÃ­ t_weather_data
 
 create table t_weather_data as
 select
@@ -203,7 +203,7 @@ from weather
 where (time between '06:00' and '21:00') and city is not null
 group by date, city;
 
--- Tabulka provedenıch testù t_covid19_tests_data
+-- Tabulka provedenÃ½ch testÅ¯ t_covid19_tests_data
 
 create table t_covid19_tests_data as
 select 
@@ -213,7 +213,7 @@ select
 from covid19_tests
 group by country, date;
 
--- Upravená tabulka covid19_basic_differences t_covid19_basic_differences
+-- UpravenÃ¡ tabulka covid19_basic_differences t_covid19_basic_differences
 
 create table t_covid19_basic_differences_data
 select
@@ -221,7 +221,7 @@ select
 from covid19_basic_differences
 where country not in ('Diamond Princess', 'Kosovo', 'Ms Zaandam', 'Namibia', 'Taiwan*', 'West Bank and Gaza');
 
--- Tabulka vybranıch ukazatelù jednotlivıch zemí t_country_data
+-- Tabulka vybranÃ½ch ukazatelÅ¯ jednotlivÃ½ch zemÃ­ t_country_data
 
 create table t_country_data as
 select
@@ -231,17 +231,17 @@ select
 	median_age_2018
 from countries where country != 'Moje_zeme';
 
--- Tabulka optimalizovanıch klíèù t_keys
+-- Tabulka optimalizovanÃ½ch klÃ­ÄÅ¯ t_keys
 
 create table t_keys as
 select
 	lt.country lookup_table_country,
-	case 
+	case
 		when lt.country = 'Namibia' then 'Namibia'
 		else cntr.country
 	end as countries_country,
 	cntr.capital_city as countries_capital_city,
-	case 
+	case
 		when cntr.country = 'Austria' then 'Vienna'
 		when cntr.country = 'Belgium' then 'Brussels'
 		when cntr.country = 'Czech Republic' then 'Prague'
@@ -298,48 +298,61 @@ select
 		when cntr.country = 'Timor-Leste' then 'Timor'
 		else ct.country
 	end as covid19_tests_country
-from 
-	(select 
-		country, 
+from
+	(
+	select
+		country,
 		iso3
-	from lookup_table
-	where province is null) lt
-left join 
-	(select
+	from
+		lookup_table
+	where
+		province is null) lt
+left join (
+	select
 		country,
 		capital_city,
 		iso3
-	from countries
-	where country != 'Northern Ireland') cntr
-on lt.iso3 = cntr.iso3
-left join
-	(select
+	from
+		countries
+	where
+		country != 'Northern Ireland') cntr on
+	lt.iso3 = cntr.iso3
+left join (
+	select
 		city
-	from weather
-	where date = '2020-08-01' and time = '06:00') w 
-on cntr.capital_city = w.city and cntr.capital_city is not null
-left join
-	(select
+	from
+		weather
+	where
+		date = '2020-08-01'
+		and time = '06:00') w on
+	cntr.capital_city = w.city
+	and cntr.capital_city is not null
+left join (
+	select
 		distinct country
-	from economies) e
-on e.country = cntr.country
-left join
-	(select
+	from
+		economies) e on
+	e.country = cntr.country
+left join (
+	select
 		distinct country
-	from religions) r
-on r.country = cntr.country
-left join
-	(select
+	from
+		religions) r on
+	r.country = cntr.country
+left join (
+	select
 		distinct country
-	from life_expectancy) le
-on cntr.country = le.country
-left join
-	(select
+	from
+		life_expectancy) le on
+	cntr.country = le.country
+left join (
+	select
 		distinct country
-	from covid19_tests ct) ct
-on cntr.country = ct.country;
+	from
+		covid19_tests ct) ct on
+	cntr.country = ct.country;
 
--- Vytvoøení indexù v tabulkách t_covid19_basic_differences_data, t_weather_data a t_covid19_tests_data
+-- VytvoÅ™enÃ­ indexÅ¯ v tabulkÃ¡ch t_covid19_basic_differences_data, t_weather_data a t_covid19_tests_data
 
 create index c_date
 on t_covid19_basic_differences_data (date);
