@@ -169,8 +169,21 @@ Therefore, the table **t_keys** was created. It contains the modified arrays tha
 
 #### Database indexes
 
-To decrease the time which is needed to execute the query that creates the final table, I recommend to create database indexes into the longest arrays which are used for joining the tables. Namely, I have created indexes in tables **t_covid19_basic_differences_data**, **t_weather** and **t_covid19_tests_data**. The indexes are also created by queries which can be found in the attached file **Auxiliary_objects.sql**.  
+To decrease the time which is needed to execute the query that creates the final table, I recommend to create database indexes into the longest arrays which are used for joining the tables. Namely, I have created indexes in tables **t_covid19_basic_differences_data**, **t_weather** and **t_covid19_tests_data**. The indexes are also created by queries which can be found in the attached file **Auxiliary_objects.sql**.
 
+The influence of indexing on the duration of query execution was tested using 3 performance tests. For each of the test, the identical query was executed on tables containing indexes and on tables without indexes. The time of query execution was measured as a performance criterion. The testing queries were as follows: 
+
+_{Query for creation of the final table}_
+
+_WHERE date BETWEEN '2020-08-01' AND {test date}_
+
+For the tests, the parameters test date and results are in the following table: 
+
+| Test| test date|Execution time with indexes (s)|Execution time without indexes (s)
+| :---: | :---: | :---: | :---: |
+| I |'2020-08-07'|4.5| 74
+| II| '2020-08-14'|8.3|147
+| III| '2020-08-21'|12.5|214
 
 ### The final table
 
@@ -197,6 +210,8 @@ The complete list of the auxiliary tables for the last crucial checkout is as fo
 **t_covid19_basic_differences_data**
 
 **t_keys**
+
+The examples of the final table usage are in the attached file **Examples.sql**
 
 **The first version of the final table was also added into database data.engeto.com on Saturday 19th June 2021** 
 
