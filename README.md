@@ -169,7 +169,9 @@ Therefore, the table **t_keys** was created. It contains the modified arrays tha
 
 #### Database indexes
 
-To decrease the time which is needed to execute the query that creates the final table, I recommend to create database indexes into the longest arrays which are used for joining the tables. Namely, I have created indexes in tables **t_covid19_basic_differences_data**, **t_weather** and **t_covid19_tests_data**. The indexes are also created by queries which can be found in the attached file **Auxiliary_objects.sql**.  
+To decrease the time which is needed to execute the query that creates the final table, I recommend to create database indexes into the longest arrays which are used for joining the tables. Namely, I have created indexes in tables **t_covid19_basic_differences_data**, **t_weather** and **t_covid19_tests_data**. The indexes are also created by queries which can be found in the attached file **Auxiliary_objects.sql**.
+
+The influence of indexing on the duration of query execution was tested using 3 
 
 
 ### The final table
