@@ -1,7 +1,7 @@
 -- Example 1: Query for mining all data FROM summer 2020  ANDwinter 2020/2021
 SELECT
 	*
-FROM t_petr_j�a_project_sql_final
+FROM t_petr_jíša_project_sql_final
 WHERE 
 	season in (0, 2)
 	AND date > '2020-05-31'
@@ -18,14 +18,14 @@ SELECT
 	round(confirmed/tests_performed * 100, 1) as 'tests_positivity_%',
 	round(confirmed*1000000/population, 1) as confirmed_on_million,
 	round(deaths*1000000/population, 1) as deaths_on_million
-FROM t_petr_j�a_project_sql_final
+FROM t_petr_jíša_project_sql_final
 WHERE tests_performed is not null
 ORDER BY date;
 
 -- Example 3: Query for mining the "dense" data with minimum occurence of the NULL cells
 SELECT
 	*
-FROM t_petr_j�a_project_sql_final
+FROM t_petr_jíša_project_sql_final
 WHERE 
 	1 = 1 
 	AND gini_coeficient IS NOT NULL
@@ -47,7 +47,7 @@ SELECT
 	country,
 	`Christianity (%)`,
 	round(max(confirmed*100/tests_performed), 1) as 'max_%_ratio_of_positive_tests'
-FROM t_petr_j�a_project_sql_final
+FROM t_petr_jíša_project_sql_final
 WHERE 
 	1 = 1
 	 AND `Christianity (%)` > `Islam (%)`
@@ -69,7 +69,7 @@ WHERE
 SELECT
 	country,
 	round(max(confirmed*100/tests_performed), 1) as 'max_%_ratio_of_positive_tests'
-FROM t_petr_j�a_project_sql_final
+FROM t_petr_jíša_project_sql_final
 WHERE tests_performed is not null
 GROUP BY country
 having max(confirmed*100/tests_performed) > 100
@@ -82,7 +82,7 @@ ORDER BY max(confirmed*100/tests_performed) DESC;
 SELECT
 	country,
 	count(confirmed*100/tests_performed) as Positivity_overmatches_tests_in_x_days
-FROM t_petr_j�a_project_sql_final
+FROM t_petr_jíša_project_sql_final
 WHERE 
 	tests_performed IS NOT NULL
 	AND confirmed/tests_performed > 1
