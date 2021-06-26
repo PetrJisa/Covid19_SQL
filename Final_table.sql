@@ -5,7 +5,7 @@ SELECT
 	cbd.*,
 	ctd.tests_performed,
 	tm.season,
-	tm.weekEND_flag,
+	tm.weekend_flag,
 	eco.unit_GDP,
 	eco.unit_GDP_year,
 	eco.gini_coeficient,
