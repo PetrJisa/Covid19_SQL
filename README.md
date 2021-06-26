@@ -179,6 +179,7 @@ WHERE date BETWEEN '2020-08-01' AND {test date}
 For the tests, the parameters test date and results are in the following table: 
 
 | Test| test date|Execution time with indexes (s)|Execution time without indexes (s)
+| --- | --- | --- | --- |
 | I |'2020-08-07'|4.5| 74
 | II| '2020-08-14'|8.3|147
 | III| '2020-08-21'|12.5|214
