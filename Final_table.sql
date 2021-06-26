@@ -1,11 +1,11 @@
--- VytvoÅ™enÃ­ finÃ¡lnÃ­ tabulky
+-- Vytvoøení finální tabulky
 
-create table t_Petr_JÃ­Å¡a_project_SQL_final as
-select
+CREATE TABLE t_Petr_Jíša_project_SQL_final as
+SELECT
 	cbd.*,
 	ctd.tests_performed,
 	tm.season,
-	tm.weekend_flag,
+	tm.weekEND_flag,
 	eco.unit_GDP,
 	eco.unit_GDP_year,
 	eco.gini_coeficient,
@@ -26,28 +26,28 @@ select
 	w.avg_temp as avg_temperature,
 	w.max_wind,
 	w.rainy_hours
-from 
+FROM 
 	t_covid19_basic_differences_data cbd
-	left join
+	LEFT JOIN
 	t_keys k
-	on cbd.country = k.lookup_table_country
-	left join
+	ON cbd.country = k.lookup_table_country
+	LEFT JOIN
 	t_economy_data eco
-	on eco.country = k.economies_country
-	left join
+	ON eco.country = k.economies_country
+	LEFT JOIN
 	t_weather_data w
-	on w.city = k.weather_city and w.date = cbd.date
-	left join
+	ON w.city = k.weather_city and w.date = cbd.date
+	LEFT JOIN
 	t_life_expectancy_data le
-	on le.country = k.life_expectancy_country
-	left join
+	ON le.country = k.life_expectancy_country
+	LEFT JOIN
 	t_time_data tm
-	on cbd.date = tm.date
-	left join
+	ON cbd.date = tm.date
+	LEFT JOIN
 	t_religion_data rel
-	on rel.country = k.religion_country
-	left join t_country_data cnt
-	on cnt.country = k.countries_country
-	left join t_covid19_tests_data ctd
-	on ctd.country = k.covid19_tests_country and ctd.date = cbd.date;
+	ON rel.country = k.religion_country
+	LEFT JOIN t_country_data cnt
+	ON cnt.country = k.countries_country
+	LEFT JOIN t_covid19_tests_data ctd
+	ON ctd.country = k.covid19_tests_country and ctd.date = cbd.date;
 	
