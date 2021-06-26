@@ -1,370 +1,370 @@
--- Tabulka ekonomick√Ωch ukazatel≈Ø t_economy_data
+-- Tabulka ekonomick˝ch ukazatel˘ t_economy_data
 
-create table t_economy_data as
-select
+CREATE TABLE t_economy_data as
+SELECT
 	e19.country,
-	case 
-		when e19.GDP is not null then round(e19.GDP/e19.population, 1)
-		when e18.GDP is not null then round(e18.GDP/e18.population, 1)
-		else null
-	end as unit_GDP,
-	case
-		when e19.GDP is not null then 2019
-		when e18.GDP is not null then 2018
-		else null
-	end as unit_GDP_year,
-	case 
-		when e15_19.avg_gini is not null then e15_19.avg_gini
-		when e10_14.avg_gini is not null then e10_14.avg_gini
-		else null
-	end as gini_coeficient,
-	case
-		when e15_19.avg_gini is not null then '2015-2019'
-		when e10_14.avg_gini is not null then '2010-2014'
-		else null
-	end as gini_calc_period,
+	CASE 
+		WHEN e19.GDP IS NOT NULL THEN round(e19.GDP/e19.population, 1)
+		WHEN e18.GDP IS NOT NULL THEN round(e18.GDP/e18.population, 1)
+		ELSE NULL
+	END as unit_GDP,
+	CASE
+		WHEN e19.GDP IS NOT NULL THEN 2019
+		WHEN e18.GDP IS NOT NULL THEN 2018
+		ELSE NULL
+	END as unit_GDP_year,
+	CASE 
+		WHEN e15_19.avg_gini IS NOT NULL THEN e15_19.avg_gini
+		WHEN e10_14.avg_gini IS NOT NULL THEN e10_14.avg_gini
+		ELSE NULL
+	END as gini_coeficient,
+	CASE
+		WHEN e15_19.avg_gini IS NOT NULL THEN '2015-2019'
+		WHEN e10_14.avg_gini IS NOT NULL THEN '2010-2014'
+		ELSE NULL
+	END as gini_calc_period,
 	e19.mortaliy_under5
-from
-	(select
+FROM
+	(SELECT
 		country,
 		GDP,
 		population,
 		mortaliy_under5
-	from economies
-	where year = '2019') as e19
-left join
-	(select
+	FROM economies
+	WHERE year = '2019') as e19
+LEFT JOIN
+	(SELECT
 		country,
 		GDP,
 		population
-	from economies
-	where year = '2018') as e18
-on e19.country = e18.country
-left join
-(select
+	FROM economies
+	WHERE year = '2018') as e18
+ON e19.country = e18.country
+LEFT JOIN
+(SELECT
 		country,
 		round(avg(gini), 1) avg_gini
-	from economies
-	where year between 2015 and 2019
-	group by country) as e15_19
-on e19.country = e15_19.country
-left join
-	(select
+	FROM economies
+	WHERE year between 2015 and 2019
+	GROUP BY country) as e15_19
+ON e19.country = e15_19.country
+LEFT JOIN
+	(SELECT
 		country,
 		round(avg(gini), 1) avg_gini
-	from economies
-	where year between 2010 and 2014
-	group by country) as e10_14
-on e19.country = e10_14.country;
+	FROM economies
+	WHERE year between 2010 and 2014
+	GROUP BY country) as e10_14
+ON e19.country = e10_14.country;
 
--- Tabulka n√°bo≈æenstv√≠ t_religion_data
+-- Tabulka n·boûenstvÌ t_religion_data
 
-create table t_religion_data
-select
-	distinct base.country,
-	round(chr.population/rs.population * 100, 2) as 'Christianity (%)',
-	round(isl.population/rs.population * 100, 2) as 'Islam (%)',
-	round(unaf.population/rs.population * 100, 2) as 'Unaffiliated religions (%)',
-	round(hin.population/rs.population * 100, 2) as 'Hinduism (%)',
-	round(bud.population/rs.population * 100, 2) as 'Buddhism (%)',
-	round(bud.population/rs.population * 100, 2) as 'Folk Religions (%)',
-	round(bud.population/rs.population * 100, 2) as 'Other Religions (%)',
-	round(bud.population/rs.population * 100, 2) as 'Judaism (%)'
-from
-	(select
-		distinct country
-	from religions where year = 2020 and country != 'All countries') base
-left join
-	(select
-		distinct country,
+CREATE TABLE t_religion_data
+SELECT
+	DISTINCT base.country,
+	round(chr.population/rs.populatiON * 100, 2) as 'Christianity (%)',
+	round(isl.population/rs.populatiON * 100, 2) as 'Islam (%)',
+	round(unaf.population/rs.populatiON * 100, 2) as 'Unaffiliated religions (%)',
+	round(hin.population/rs.populatiON * 100, 2) as 'Hinduism (%)',
+	round(bud.population/rs.populatiON * 100, 2) as 'Buddhism (%)',
+	round(bud.population/rs.populatiON * 100, 2) as 'Folk Religions (%)',
+	round(bud.population/rs.populatiON * 100, 2) as 'Other Religions (%)',
+	round(bud.population/rs.populatiON * 100, 2) as 'Judaism (%)'
+FROM
+	(SELECT
+		DISTINCT country
+	FROM religions WHERE year = 2020 AND country != 'All countries') base
+LEFT JOIN
+	(SELECT
+		DISTINCT country,
 		population
-	from religions
-	where year = 2020 and country != 'All countries' and religion = 'Christianity') chr
-on base.country = chr.country
-join
-	(select
-		distinct country,
+	FROM religions
+	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Christianity') chr
+ON base.country = chr.country
+LEFT JOIN
+	(SELECT
+		DISTINCT country,
 		population
-	from religions
-	where year = 2020 and country != 'All countries' and religion = 'Islam') isl
-on base.country = isl.country
-left join
-	(select
-		distinct country,
+	FROM religions
+	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Islam') isl
+ON base.country = isl.country
+LEFT JOIN
+	(SELECT
+		DISTINCT country,
 		population
-	from religions
-	where year = 2020 and country != 'All countries' and religion = 'Unaffiliated Religions') unaf
-on base.country = unaf.country
-left join
-	(select
-		distinct country,
+	FROM religions
+	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Unaffiliated Religions') unaf
+ON base.country = unaf.country
+LEFT JOIN
+	(SELECT
+		DISTINCT country,
 		population
-	from religions
-	where year = 2020 and country != 'All countries' and religion = 'Hinduism') hin
-on base.country = hin.country
-left join
-	(select
-		distinct country,
+	FROM religions
+	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Hinduism') hin
+ON base.country = hin.country
+LEFT JOIN
+	(SELECT
+		DISTINCT country,
 		population
-	from religions
-	where year = 2020 and country != 'All countries' and religion = 'Buddhism') bud
-on base.country = bud.country
-left join
-	(select
-		distinct country,
+	FROM religions
+	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Buddhism') bud
+ON base.country = bud.country
+LEFT JOIN
+	(SELECT
+		DISTINCT country,
 		population
-	from religions
-	where year = 2020 and country != 'All countries' and religion = 'Folk Religions') folk
-on base.country = folk.country
-left join
-	(select
-		distinct country,
+	FROM religions
+	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Folk Religions') folk
+ON base.country = folk.country
+LEFT JOIN
+	(SELECT
+		DISTINCT country,
 		population
-	from religions
-	where year = 2020 and country != 'All countries' and religion = 'Other Religions') other
-on base.country = other.country
-left join
-	(select
-		distinct country,
+	FROM religions
+	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Other Religions') other
+ON base.country = other.country
+LEFT JOIN
+	(SELECT
+		DISTINCT country,
 		population
-	from religions
-	where year = 2020 and country != 'All countries' and religion = 'Judaism') juda
-on base.country = juda.country
-left join
-	(select
-		distinct country,
+	FROM religions
+	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Judaism') juda
+ON base.country = juda.country
+LEFT JOIN
+	(SELECT
+		DISTINCT country,
 		sum(population) population
-	from religions
-	where year = 2020 and country != 'All countries'
-	group by country
-	having sum(population) > 0) rs
-on base.country = rs.country;
+	FROM religions
+	WHERE year = 2020 and country != 'All countries'
+	GROUP BY country
+	HAVING sum(population) > 0) rs
+ON base.country = rs.country;
 
--- Tabulka ƒçasov√Ωch ukazatel≈Ø t_time_data
+-- Tabulka Ëasov˝ch ukazatel˘ t_time_data
 
-create table t_time_data as
-select
+CREATE TABLE t_time_data as
+SELECT
 	c.date,
-	case
-		when c.date > '2021-03-22' then 1
-		else s.seasons
-	end as season,
-	case
-		when weekday(c.date) in (5,6) then 1
-		else 0
-	end as weekend_flag
-from
-	(select
-		distinct date
-	from covid19_basic_differences) c
-left join
-	(select 
+	CASE
+		WHEN c.date > '2021-03-22' THEN 1
+		ELSE s.seasons
+	END as season,
+	CASE
+		WHEN weekday(c.date) in (5,6) THEN 1
+		ELSE 0
+	END as weekend_flag
+FROM
+	(SELECT
+		DISTINCT date
+	FROM covid19_basic_differences) c
+LEFT JOIN
+	(SELECT 
 		date,
 		seasons
-	from seasons) s
-on c.date = s.date;
+	FROM seasons) s
+ON c.date = s.date;
 
--- Tabulka se zmƒõnou oƒçek√°van√© doby do≈æit√≠ t_life_expectancy_data
+-- Tabulka se zmÏnou oËek·vanÈ doby doûitÌ t_life_expectancy_data
 
-create table t_life_expectancy_data as
-select
+CREATE TABLE t_life_expectancy_data as
+SELECT
 	past.country,
 	round(past.life_expectancy, 1) as life_expectancy_1965,
 	round(present.life_expectancy, 1) as life_expectancy_2015,
 	round(present.life_expectancy - past.life_expectancy, 1) as life_expectancy_difference
-from
-	(select
+FROM
+	(SELECT
 		country,
 		life_expectancy
-	from life_expectancy
-	where year = 2015) as present
-left join
-	(select
+	FROM life_expectancy
+	WHERE year = 2015) as present
+LEFT JOIN
+	(SELECT
 		country,
 		life_expectancy
-	from life_expectancy
-	where year = 1965) as past
-on present.country = past.country;
+	FROM life_expectancy
+	WHERE year = 1965) as past
+ON present.country = past.country;
 
--- Tabulka s √∫daji o poƒças√≠ t_weather_data
+-- Tabulka s ˙daji o poËasÌ t_weather_data
 
-create table t_weather_data as
-select
+CREATE TABLE t_weather_data as
+SELECT
 	date,
 	city,
-	round(avg(LEFT(temp,position (' ' IN temp) - 1)),1) AS avg_temp,
-	max(cast(LEFT(wind,position (' ' IN wind) - 1) as int)) AS max_wind,
+	round(avg(LEFT(temp,positiON (' ' IN temp) - 1)),1) AS avg_temp,
+	max(cast(LEFT(wind,positiON (' ' IN wind) - 1) as int)) AS max_wind,
 	sum(
-		case 
-			when LEFT(rain,position (' ' IN rain) - 1) != 0 then 3
-			else 0
-		end) as rainy_hours
-from weather
-where (time between '06:00' and '21:00') and city is not null
-group by date, city;
+		CASE 
+			WHEN LEFT(rain,positiON (' ' IN rain) - 1) != 0 THEN 3
+			ELSE 0
+		END) as rainy_hours
+FROM weather
+WHERE (time between '06:00' AND '21:00') AND city IS NOT NULL
+GROUP BY date, city;
 
--- Tabulka proveden√Ωch test≈Ø t_covid19_tests_data
+-- Tabulka proveden˝ch test˘ t_covid19_tests_data
 
-create table t_covid19_tests_data as
-select 
+CREATE TABLE t_covid19_tests_data as
+SELECT 
 	date, 
 	country, 
 	max (tests_performed) as tests_performed 
-from covid19_tests
-group by country, date;
+FROM covid19_tests
+GROUP BY country, date;
 
--- Upraven√° tabulka covid19_basic_differences t_covid19_basic_differences
+-- Upraven· tabulka covid19_basic_differences t_covid19_basic_differences
 
-create table t_covid19_basic_differences_data
-select
+CREATE TABLE t_covid19_basic_differences_data
+SELECT
 	*
-from covid19_basic_differences
-where country not in ('Diamond Princess', 'Kosovo', 'Ms Zaandam', 'Namibia', 'Taiwan*', 'West Bank and Gaza');
+FROM covid19_basic_differences
+WHERE country NOT IN ('Diamond Princess', 'Kosovo', 'Ms Zaandam', 'Namibia', 'Taiwan*', 'West Bank and Gaza');
 
--- Tabulka vybran√Ωch ukazatel≈Ø jednotliv√Ωch zem√≠ t_country_data
+-- Tabulka vybran˝ch ukazatel˘ jednotliv˝ch zemÌ t_country_data
 
-create table t_country_data as
-select
-	distinct country,
+CREATE TABLE t_country_data as
+SELECT
+	DISTINCT country,
 	population,
 	population_density,
 	median_age_2018
-from countries where country != 'Moje_zeme';
+FROM countries where country != 'Moje_zeme';
 
--- Tabulka optimalizovan√Ωch kl√≠ƒç≈Ø t_keys
+-- Tabulka optimalizovan˝ch klÌË˘ t_keys
 
-create table t_keys as
-select
+CREATE TABLE t_keys as
+SELECT
 	lt.country lookup_table_country,
-	case
-		when lt.country = 'Namibia' then 'Namibia'
-		else cntr.country
-	end as countries_country,
+	CASE
+		WHEN lt.country = 'Namibia' THEN 'Namibia'
+		ELSE cntr.country
+	END as countries_country,
 	cntr.capital_city as countries_capital_city,
-	case
-		when cntr.country = 'Austria' then 'Vienna'
-		when cntr.country = 'Belgium' then 'Brussels'
-		when cntr.country = 'Czech Republic' then 'Prague'
-		when cntr.country = 'Finland' then 'Helsinki'
-		when cntr.country = 'Greece' then 'Athens'
-		when cntr.country = 'Italy' then 'Rome'
-		when cntr.country = 'Luxembourg' then 'Luxembourg'
-		when cntr.country = 'Poland' then 'Warsaw'
-		when cntr.country = 'Portugal' then 'Lisboa'
-		when cntr.country = 'Romania' then 'Bucharest'
-		when cntr.country = 'Ukraine' then 'Kiev'
-		else w.city
-	end as weather_city,
-	case
-		when cntr.country = 'Bahamas' then 'Bahamas, The'
-		when cntr.country = 'Brunei' then 'Brunei Darussalar'
-		when cntr.country = 'Fiji Islands' then 'Fiji'
-		when cntr.country = 'Cape Verde' then 'Cabo Verde'
-		when cntr.country = 'Libyan Arab Jamahiriya' then 'Libya'
-		when cntr.country = 'Micronesia, Federated States of' then 'Micronesia, Fed. Sts.'
-		else cntr.country
-	end as economies_country,
-	case
-		when cntr.country = 'Fiji Islands' then 'Fiji'
-		when cntr.country = 'Libyan Arab Jamahiriya' then 'Libya'
-		when cntr.country = 'Holy See (Vatican City State)' then 'Vatican City'
-		when cntr.country = 'Saint Lucia' then 'St. Lucia'
-		when cntr.country = 'Saint Kitts and Nevis' then 'St. Kitts and Nevis'
-		when cntr.country = 'Saint Vincent and the Grenadine' then 'St. Vincent and the Grenadines'
-		else cntr.country
-	end as religion_country,
-	case
-		when cntr.country = 'Bahamas' then 'Bahamas, The'
-		when cntr.country = 'Brunei' then 'Brunei Darussalar'
-		when cntr.country = 'Fiji Islands' then 'Fiji'
-		when cntr.country = 'Cape Verde' then 'Cabo Verde'
-		when cntr.country = 'Libyan Arab Jamahiriya' then 'Libya'
-		when cntr.country = 'Micronesia, Federated States of' then 'Micronesia, Fed. Sts.'
-		when cntr.country = 'Timor-Leste' then 'Timor'
-		when cntr.country = 'Holy See (Vatican City State)' then 'Vatican'
-		else le.country
-	end as life_expectancy_country,
-	case
-		when cntr.country = 'Bahamas' then 'Bahamas, The'
-		when cntr.country = 'Brunei' then 'Brunei Darussalar'
-		when cntr.country = 'Fiji Islands' then 'Fiji'
-		when cntr.country = 'Cape Verde' then 'Cabo Verde'
-		when cntr.country = 'Libyan Arab Jamahiriya' then 'Libya'
-		when cntr.country = 'Micronesia, Federated States of' then 'Micronesia, Fed. Sts.'
-		when cntr.country = 'Holy See (Vatican City State)' then 'Vatican City'
-		when cntr.country = 'Saint Lucia' then 'St. Lucia'
-		when cntr.country = 'Saint Kitts and Nevis' then 'St. Kitts and Nevis'
-		when cntr.country = 'Saint Vincent and the Grenadine' then 'St. Vincent and the Grenadines'
-		when cntr.country = 'Timor-Leste' then 'Timor'
-		else ct.country
-	end as covid19_tests_country
-from
+	CASE
+		WHEN cntr.country = 'Austria' THEN 'Vienna'
+		WHEN cntr.country = 'Belgium' THEN 'Brussels'
+		WHEN cntr.country = 'Czech Republic' THEN 'Prague'
+		WHEN cntr.country = 'Finland' THEN 'Helsinki'
+		WHEN cntr.country = 'Greece' THEN 'Athens'
+		WHEN cntr.country = 'Italy' THEN 'Rome'
+		WHEN cntr.country = 'Luxembourg' THEN 'Luxembourg'
+		WHEN cntr.country = 'Poland' THEN 'Warsaw'
+		WHEN cntr.country = 'Portugal' THEN 'Lisboa'
+		WHEN cntr.country = 'Romania' THEN 'Bucharest'
+		WHEN cntr.country = 'Ukraine' THEN 'Kiev'
+		ELSE w.city
+	END as weather_city,
+	CASE
+		WHEN cntr.country = 'Bahamas' THEN 'Bahamas, The'
+		WHEN cntr.country = 'Brunei' THEN 'Brunei Darussalar'
+		WHEN cntr.country = 'Fiji Islands' THEN 'Fiji'
+		WHEN cntr.country = 'Cape Verde' THEN 'Cabo Verde'
+		WHEN cntr.country = 'Libyan Arab Jamahiriya' THEN 'Libya'
+		WHEN cntr.country = 'Micronesia, Federated States of' THEN 'Micronesia, Fed. Sts.'
+		ELSE cntr.country
+	END as economies_country,
+	CASE
+		WHEN cntr.country = 'Fiji Islands' THEN 'Fiji'
+		WHEN cntr.country = 'Libyan Arab Jamahiriya' THEN 'Libya'
+		WHEN cntr.country = 'Holy See (Vatican City State)' THEN 'Vatican City'
+		WHEN cntr.country = 'Saint Lucia' THEN 'St. Lucia'
+		WHEN cntr.country = 'Saint Kitts and Nevis' THEN 'St. Kitts and Nevis'
+		WHEN cntr.country = 'Saint Vincent and the Grenadine' THEN 'St. Vincent and the Grenadines'
+		ELSE cntr.country
+	END as religion_country,
+	CASE
+		WHEN cntr.country = 'Bahamas' THEN 'Bahamas, The'
+		WHEN cntr.country = 'Brunei' THEN 'Brunei Darussalar'
+		WHEN cntr.country = 'Fiji Islands' THEN 'Fiji'
+		WHEN cntr.country = 'Cape Verde' THEN 'Cabo Verde'
+		WHEN cntr.country = 'Libyan Arab Jamahiriya' THEN 'Libya'
+		WHEN cntr.country = 'Micronesia, Federated States of' THEN 'Micronesia, Fed. Sts.'
+		WHEN cntr.country = 'Timor-Leste' THEN 'Timor'
+		WHEN cntr.country = 'Holy See (Vatican City State)' THEN 'Vatican'
+		ELSE le.country
+	END as life_expectancy_country,
+	CASE
+		WHEN cntr.country = 'Bahamas' THEN 'Bahamas, The'
+		WHEN cntr.country = 'Brunei' THEN 'Brunei Darussalar'
+		WHEN cntr.country = 'Fiji Islands' THEN 'Fiji'
+		WHEN cntr.country = 'Cape Verde' THEN 'Cabo Verde'
+		WHEN cntr.country = 'Libyan Arab Jamahiriya' THEN 'Libya'
+		WHEN cntr.country = 'Micronesia, Federated States of' THEN 'Micronesia, Fed. Sts.'
+		WHEN cntr.country = 'Holy See (Vatican City State)' THEN 'Vatican City'
+		WHEN cntr.country = 'Saint Lucia' THEN 'St. Lucia'
+		WHEN cntr.country = 'Saint Kitts and Nevis' THEN 'St. Kitts and Nevis'
+		WHEN cntr.country = 'Saint Vincent and the Grenadine' THEN 'St. Vincent and the Grenadines'
+		WHEN cntr.country = 'Timor-Leste' THEN 'Timor'
+		ELSE ct.country
+	END as covid19_tests_country
+FROM
 	(
-	select
+	SELECT
 		country,
 		iso3
-	from
+	FROM
 		lookup_table
-	where
-		province is null) lt
-left join (
-	select
+	WHERE
+		province IS NULL) lt
+LEFT JOIN (
+	SELECT
 		country,
 		capital_city,
 		iso3
-	from
+	FROM
 		countries
-	where
-		country != 'Northern Ireland') cntr on
-	lt.iso3 = cntr.iso3
-left join (
-	select
+	WHERE
+		country != 'Northern Ireland') cntr 
+	ON lt.iso3 = cntr.iso3
+LEFT JOIN (
+	SELECT
 		city
-	from
+	FROM
 		weather
-	where
+	WHERE
 		date = '2020-08-01'
-		and time = '06:00') w on
-	cntr.capital_city = w.city
-	and cntr.capital_city is not null
-left join (
-	select
-		distinct country
-	from
-		economies) e on
-	e.country = cntr.country
-left join (
-	select
-		distinct country
-	from
-		religions) r on
-	r.country = cntr.country
-left join (
-	select
-		distinct country
-	from
-		life_expectancy) le on
-	cntr.country = le.country
-left join (
-	select
-		distinct country
-	from
-		covid19_tests ct) ct on
-	cntr.country = ct.country;
+		and time = '06:00') w 
+	ON cntr.capital_city = w.city
+	AND cntr.capital_city IS NOT NULL
+LEFT JOIN (
+	SELECT
+		DISTINCT country
+	FROM
+		economies) e
+	ON e.country = cntr.country
+LEFT JOIN (
+	SELECT
+		DISTINCT country
+	FROM
+		religions) r
+	ON r.country = cntr.country
+LEFT JOIN (
+	SELECT
+		DISTINCT country
+	FROM
+		life_expectancy) le
+	ON cntr.country = le.country
+LEFT JOIN (
+	SELECT
+		DISTINCT country
+	FROM
+		covid19_tests ct) ct
+	ON cntr.country = ct.country;
 
--- Vytvo≈ôen√≠ index≈Ø v tabulk√°ch t_covid19_basic_differences_data, t_weather_data a t_covid19_tests_data
+-- Vytvo¯enÌ index˘ v tabulk·ch t_covid19_basic_differences_data, t_weather_data a t_covid19_tests_data
 
-create index c_date
-on t_covid19_basic_differences_data (date);
+CREATE INDEX c_date
+ON t_covid19_basic_differences_data (date);
 
-create index c_country
-on t_covid19_basic_differences_data (country);
+CREATE INDEX c_country
+ON t_covid19_basic_differences_data (country);
 
-create index w_date
-on t_weather_data (date);
+CREATE INDEX w_date
+ON t_weather_data (date);
 
-create index ct_date
-on t_covid19_tests_data (date);
+CREATE INDEX ct_date
+ON t_covid19_tests_data (date);
 
-create index ct_country
-on t_covid19_tests_data (country);
+CREATE INDEX ct_country
+ON t_covid19_tests_data (country);
