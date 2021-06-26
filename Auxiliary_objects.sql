@@ -1,4 +1,4 @@
--- Tabulka ekonomickıch ukazatelù t_economy_data
+-- Tabulka ekonomickÃ½ch ukazatelÅ¯ t_economy_data
 
 CREATE TABLE t_economy_data as
 SELECT
@@ -57,7 +57,7 @@ LEFT JOIN
 	GROUP BY country) as e10_14
 ON e19.country = e10_14.country;
 
--- Tabulka náboenství t_religion_data
+-- Tabulka nÃ¡boÅ¾enstvÃ­ t_religion_data
 
 CREATE TABLE t_religion_data
 SELECT
@@ -140,7 +140,7 @@ LEFT JOIN
 	HAVING sum(population) > 0) rs
 ON base.country = rs.country;
 
--- Tabulka èasovıch ukazatelù t_time_data
+-- Tabulka ÄasovÃ½ch ukazatelÅ¯ t_time_data
 
 CREATE TABLE t_time_data as
 SELECT
@@ -164,7 +164,7 @@ LEFT JOIN
 	FROM seasons) s
 ON c.date = s.date;
 
--- Tabulka se zmìnou oèekávané doby doití t_life_expectancy_data
+-- Tabulka se zmÄ›nou oÄekÃ¡vanÃ© doby doÅ¾itÃ­ t_life_expectancy_data
 
 CREATE TABLE t_life_expectancy_data as
 SELECT
@@ -186,7 +186,7 @@ LEFT JOIN
 	WHERE year = 1965) as past
 ON present.country = past.country;
 
--- Tabulka s údaji o poèasí t_weather_data
+-- Tabulka s Ãºdaji o poÄasÃ­ t_weather_data
 
 CREATE TABLE t_weather_data as
 SELECT
@@ -203,7 +203,7 @@ FROM weather
 WHERE (time between '06:00' AND '21:00') AND city IS NOT NULL
 GROUP BY date, city;
 
--- Tabulka provedenıch testù t_covid19_tests_data
+-- Tabulka provedenÃ½ch testÅ¯ t_covid19_tests_data
 
 CREATE TABLE t_covid19_tests_data as
 SELECT 
@@ -213,7 +213,7 @@ SELECT
 FROM covid19_tests
 GROUP BY country, date;
 
--- Upravená tabulka covid19_basic_differences t_covid19_basic_differences
+-- UpravenÃ¡ tabulka covid19_basic_differences t_covid19_basic_differences
 
 CREATE TABLE t_covid19_basic_differences_data
 SELECT
@@ -221,7 +221,7 @@ SELECT
 FROM covid19_basic_differences
 WHERE country NOT IN ('Diamond Princess', 'Kosovo', 'Ms Zaandam', 'Namibia', 'Taiwan*', 'West Bank and Gaza');
 
--- Tabulka vybranıch ukazatelù jednotlivıch zemí t_country_data
+-- Tabulka vybranÃ½ch ukazatelÅ¯ jednotlivÃ½ch zemÃ­ t_country_data
 
 CREATE TABLE t_country_data as
 SELECT
@@ -231,7 +231,7 @@ SELECT
 	median_age_2018
 FROM countries where country != 'Moje_zeme';
 
--- Tabulka optimalizovanıch klíèù t_keys
+-- Tabulka optimalizovanÃ½ch klÃ­ÄÅ¯ t_keys
 
 CREATE TABLE t_keys as
 SELECT
@@ -352,7 +352,7 @@ LEFT JOIN (
 		covid19_tests ct) ct
 	ON cntr.country = ct.country;
 
--- Vytvoøení indexù v tabulkách t_covid19_basic_differences_data, t_weather_data a t_covid19_tests_data
+-- VytvoÅ™enÃ­ indexÅ¯ v tabulkÃ¡ch t_covid19_basic_differences_data, t_weather_data a t_covid19_tests_data
 
 CREATE INDEX c_date
 ON t_covid19_basic_differences_data (date);
