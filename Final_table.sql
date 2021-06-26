@@ -1,6 +1,6 @@
--- Vytvoøení finální tabulky
+-- VytvoÅ™enÃ­ finÃ¡lnÃ­ tabulky
 
-CREATE TABLE t_Petr_Jíša_project_SQL_final as
+CREATE TABLE t_Petr_JÃ­Å¡a_project_SQL_final as
 SELECT
 	cbd.*,
 	ctd.tests_performed,
