@@ -62,14 +62,14 @@ ON e19.country = e10_14.country;
 CREATE TABLE t_religion_data
 SELECT
 	DISTINCT base.country,
-	round(chr.population/rs.populatiON * 100, 2) as 'Christianity (%)',
-	round(isl.population/rs.populatiON * 100, 2) as 'Islam (%)',
-	round(unaf.population/rs.populatiON * 100, 2) as 'Unaffiliated religions (%)',
-	round(hin.population/rs.populatiON * 100, 2) as 'Hinduism (%)',
-	round(bud.population/rs.populatiON * 100, 2) as 'Buddhism (%)',
-	round(bud.population/rs.populatiON * 100, 2) as 'Folk Religions (%)',
-	round(bud.population/rs.populatiON * 100, 2) as 'Other Religions (%)',
-	round(bud.population/rs.populatiON * 100, 2) as 'Judaism (%)'
+	round(chr.population/rs.population * 100, 2) as 'Christianity (%)',
+	round(isl.population/rs.population * 100, 2) as 'Islam (%)',
+	round(unaf.population/rs.population * 100, 2) as 'Unaffiliated religions (%)',
+	round(hin.population/rs.population * 100, 2) as 'Hinduism (%)',
+	round(bud.population/rs.population * 100, 2) as 'Buddhism (%)',
+	round(bud.population/rs.population * 100, 2) as 'Folk religions (%)',
+	round(bud.population/rs.population * 100, 2) as 'Other religions (%)',
+	round(bud.population/rs.population * 100, 2) as 'Judaism (%)'
 FROM
 	(SELECT
 		DISTINCT country
@@ -79,56 +79,56 @@ LEFT JOIN
 		DISTINCT country,
 		population
 	FROM religions
-	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Christianity') chr
+	WHERE year = 2020 AND country != 'All countries' AND religion = 'Christianity') chr
 ON base.country = chr.country
 LEFT JOIN
 	(SELECT
 		DISTINCT country,
 		population
 	FROM religions
-	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Islam') isl
+	WHERE year = 2020 AND country != 'All countries' AND religion = 'Islam') isl
 ON base.country = isl.country
 LEFT JOIN
 	(SELECT
 		DISTINCT country,
 		population
 	FROM religions
-	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Unaffiliated Religions') unaf
+	WHERE year = 2020 AND country != 'All countries' AND religion = 'Unaffiliated religions') unaf
 ON base.country = unaf.country
 LEFT JOIN
 	(SELECT
 		DISTINCT country,
 		population
 	FROM religions
-	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Hinduism') hin
+	WHERE year = 2020 AND country != 'All countries' AND religion = 'Hinduism') hin
 ON base.country = hin.country
 LEFT JOIN
 	(SELECT
 		DISTINCT country,
 		population
 	FROM religions
-	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Buddhism') bud
+	WHERE year = 2020 AND country != 'All countries' AND religion = 'Buddhism') bud
 ON base.country = bud.country
 LEFT JOIN
 	(SELECT
 		DISTINCT country,
 		population
 	FROM religions
-	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Folk Religions') folk
+	WHERE year = 2020 AND country != 'All countries' AND religion = 'Folk religions') folk
 ON base.country = folk.country
 LEFT JOIN
 	(SELECT
 		DISTINCT country,
 		population
 	FROM religions
-	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Other Religions') other
+	WHERE year = 2020 AND country != 'All countries' AND religion = 'Other religions') other
 ON base.country = other.country
 LEFT JOIN
 	(SELECT
 		DISTINCT country,
 		population
 	FROM religions
-	WHERE year = 2020 AND country != 'All countries' AND religiON = 'Judaism') juda
+	WHERE year = 2020 AND country != 'All countries' AND religion = 'Judaism') juda
 ON base.country = juda.country
 LEFT JOIN
 	(SELECT
@@ -192,11 +192,11 @@ CREATE TABLE t_weather_data as
 SELECT
 	date,
 	city,
-	round(avg(LEFT(temp,positiON (' ' IN temp) - 1)),1) AS avg_temp,
-	max(cast(LEFT(wind,positiON (' ' IN wind) - 1) as int)) AS max_wind,
+	round(avg(LEFT(temp,POSITION (' ' IN temp) - 1)),1) AS avg_temp,
+	max(cast(LEFT(wind,POSITION (' ' IN wind) - 1) as int)) AS max_wind,
 	sum(
 		CASE 
-			WHEN LEFT(rain,positiON (' ' IN rain) - 1) != 0 THEN 3
+			WHEN LEFT(rain,POSITION (' ' IN rain) - 1) != 0 THEN 3
 			ELSE 0
 		END) as rainy_hours
 FROM weather
