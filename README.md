@@ -173,9 +173,9 @@ To decrease the time which is needed to execute the query that creates the final
 
 The influence of indexing on the duration of query execution was tested using 3 performance tests. For each of the test, the identical query was executed on tables containing indexes and on tables without indexes. The time of query execution was measured as a performance criterion. The testing queries were as follows: 
 
-{Query for creation of the final table}
+_{Query for creation of the final table}_
 
-WHERE date BETWEEN '2020-08-01' AND {test date}
+_WHERE date BETWEEN '2020-08-01' AND {test date}_
 
 For the tests, the parameters test date and results are in the following table: 
 
